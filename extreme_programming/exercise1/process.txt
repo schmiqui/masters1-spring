@@ -1,0 +1,341 @@
+0. Zaciatok
+def wrap(text, width):
+    return ""
+
+
+1. NESPLNENY TEST:*********************
+    def test_1(self):
+        self.assertEqual(wrap("ahoj", 10), "ahoj")
+
+
+KOD:
+def wrap(text, width):
+    lines = []
+    actual = ""
+    for char in text:
+        if len(actual + char) == width:
+            lines.append(actual + char)
+            actual = ""
+        else:
+            actual += char
+
+    lines.append(actual)
+    return '\n'.join(lines)
+
+
+2. NESPLNENY TEST:*********************
+    def test_2(self):
+        self.assertEqual(wrap("abcd", 4), "abcd")
+
+KOD:
+def wrap(text, width):
+    lines = []
+    actual = ""
+    for char in text:
+        if len(actual + char) == width:
+            lines.append(actual + char)
+            actual = ""
+        else:
+            actual += char
+
+    if actual:
+        lines.append(actual)
+    return '\n'.join(lines)
+
+
+3. NESPLNENY TEST:**************************
+    def test_3(self):
+        self.assertEqual(wrap("Four score", 7), "Four\nscore")
+
+KOD:
+ZMENA: Z char pristupu na words - nevedeli sa lamat slova.
+def wrap(text, width):
+    lines = []
+    words = text.split()
+    actual = ""
+
+    for word in words:
+        if len(actual + word) <= width:
+            actual += word
+        else:
+            lines.append(actual)
+            actual = word
+
+    if actual:
+        lines.append(actual)
+    return '\n'.join(lines)
+
+
+4. NESPLNENY TEST:**************************
+    def test_4(self):
+        self.assertEqual(wrap("ab cd", 5), "ab cd")
+
+KOD:
+def wrap(text, width):
+    lines = []
+    words = text.split()
+    actual = ""
+
+    for word in words:
+        if len(actual + word) <= width:
+            if actual != "":
+                actual += word
+            else:
+                actual = word
+        else:
+            lines.append(actual)
+            actual = word
+
+    if actual:
+        lines.append(actual)
+    return '\n'.join(lines)
+
+
+5. NESPLNENY TEST:**************************
+        self.assertEqual(wrap("Fifteen", 4), "Fift\neen")
+
+KOD:
+def wrap(text, width):
+    lines = []
+    words = text.split()
+    actual = ""
+
+    for word in words:
+        if not actual and len(word) > width:
+            for i in range(0, len(word), width):
+                lines.append(word[i:i+width])
+            continue
+
+        actual_with_word = (actual + " " + word).strip()
+        if len(actual_with_word) <= width:
+            actual = actual_with_word
+        else:
+            lines.append(actual)
+            actual = word
+
+    if actual:
+        lines.append(actual)
+    return '\n'.join(lines)
+
+6. NESPLNENY TEST:**************************
+    def test_6(self):
+        self.assertEqual(wrap("hi abcdef", 4), "hi\nabcd\nef")
+
+KOD:
+def wrap(text, width):
+    lines = []
+    words = text.split()
+    actual = ""
+
+    for word in words:
+        if len(word) > width:
+            if actual:
+                lines.append(actual)
+                actual = ""
+            for i in range(0, len(word), width):
+                lines.append(word[i:i+width])
+            continue
+
+        actual_with_word = (actual + " " + word).strip()
+        if len(actual_with_word) <= width:
+            actual = actual_with_word
+        else:
+            lines.append(actual)
+            actual = word
+
+    if actual:
+        lines.append(actual)
+    return '\n'.join(lines)
+
+7. NESPLNENY TEST:**************************
+    def test_7(self):
+        self.assertEqual(wrap("Ahoj\nsvet", 10), "Ahoj\nsvet")
+
+KOD:
+ZMENA: nechavame nove riadky ako boli povodne, preto bolo potrebne iterovat cez \n - paragrafy
+def wrap(text, width):
+    lines = []
+
+    for paragraph in text.split("\n"):
+        words = paragraph.split()
+        actual = ""
+        for word in words:
+            if len(word) > width:
+                if actual:
+                    lines.append(actual)
+                    actual = ""
+                for i in range(0, len(word), width):
+                    lines.append(word[i:i+width])
+                continue
+
+            actual_with_word = (actual + " " + word).strip()
+            if len(actual_with_word) <= width:
+                actual = actual_with_word
+            else:
+                lines.append(actual)
+                actual = word
+
+        if actual:
+            lines.append(actual)
+    return '\n'.join(lines)
+
+
+8. NESPLNENY TEST:**************************
+    def test_8(self):
+        self.assertEqual(wrap("Ahoj\n\nsvet", 10), "Ahoj\n\nsvet")
+
+KOD:
+def wrap(text, width):
+    lines = []
+
+    for paragraph in text.split("\n"):
+        if paragraph == "":
+            lines.append("")
+            continue
+
+        words = paragraph.split()
+        actual = ""
+        for word in words:
+            if len(word) > width:
+                if actual:
+                    lines.append(actual)
+                    actual = ""
+                for i in range(0, len(word), width):
+                    lines.append(word[i:i+width])
+                continue
+
+            actual_with_word = (actual + " " + word).strip()
+            if len(actual_with_word) <= width:
+                actual = actual_with_word
+            else:
+                lines.append(actual)
+                actual = word
+
+        if actual:
+            lines.append(actual)
+    return '\n'.join(lines)
+
+9. NESPLNENY TEST:**************************
+    def test_9(self):
+        self.assertEqual(wrap("Ahoj\n     \nsvet", 10), "Ahoj\n\nsvet")
+
+KOD:
+def wrap(text, width):
+    lines = []
+
+    for paragraph in text.split("\n"):
+        if paragraph.strip() == "":
+            lines.append("")
+            continue
+
+        words = paragraph.split()
+        actual = ""
+
+        for word in words:
+            if len(word) > width:
+                if actual:
+                    lines.append(actual)
+                    actual = ""
+                for i in range(0, len(word), width):
+                    lines.append(word[i:i + width])
+                continue
+
+            actual_with_word = (actual + " " + word).strip()
+            if len(actual_with_word) <= width:
+                actual = actual_with_word
+            else:
+                if actual:
+                    lines.append(actual)
+                actual = word
+
+        if actual:
+            lines.append(actual)
+
+    return "\n".join(lines)
+
+10. NESPLNENY TEST:**************************
+    def test_10(self):
+        self.assertEqual(wrap("Ahoj\n     \nsvet", 0), "")
+
+KOD:
+def wrap(text, width):
+
+    if width <= 0:
+        return ""
+
+    lines = []
+
+    for paragraph in text.split("\n"):
+        if paragraph.strip() == "":
+            lines.append("")
+            continue
+
+        words = paragraph.split()
+        actual = ""
+
+        for word in words:
+            if len(word) > width:
+                if actual:
+                    lines.append(actual)
+                    actual = ""
+                for i in range(0, len(word), width):
+                    lines.append(word[i:i + width])
+                continue
+
+            actual_with_word = (actual + " " + word).strip()
+            if len(actual_with_word) <= width:
+                actual = actual_with_word
+            else:
+                if actual:
+                    lines.append(actual)
+                actual = word
+
+        if actual:
+            lines.append(actual)
+
+    return "\n".join(lines)
+
+11. NESPLNENY TEST:**************************
+    def test_11(self):
+        self.assertEqual(wrap("abcdefghijKL mn", 5), "abcde\nfghij\nKL mn")
+
+KOD:
+ZMENA: ak ostane pri dlhom slove zvysok, tak sa moze este k tomu doplnit dalsie slovo ak vojde
+def wrap(text, width):
+    if width <= 0:
+        return ""
+
+    lines = []
+
+    for paragraph in text.split("\n"):
+        if paragraph.strip() == "":
+            lines.append("")
+            continue
+
+        words = paragraph.split()
+        actual = ""
+
+        for word in words:
+            if len(word) > width:
+                if actual:
+                    lines.append(actual)
+
+                i = 0
+                while i + width < len(word):
+                    lines.append(word[i:i + width])
+                    i += width
+                actual = word[i:]
+                continue
+
+            actual_with_word = (actual + " " + word).strip()
+            if len(actual_with_word) <= width:
+                actual = actual_with_word
+            else:
+                if actual:
+                    lines.append(actual)
+                actual = word
+
+        if actual:
+            lines.append(actual)
+
+    return "\n".join(lines)
