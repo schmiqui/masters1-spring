@@ -1,0 +1,606 @@
+def test1(self):
+    self.assertEqual(convertToInt("X"), 10)
+
+def convertToInt(romanNumber):
+    if(romanNumber == "X"):
+        return 10
+    return 0
+
+def test2(self):
+    self.assertEqual(convertToInt("I"), 1)
+
+def convertToInt(romanNumber):
+    numbers_mapper = {
+        "I": 1, "V": 5, "X": 10,
+        "L": 50, "C": 100, "D": 500,
+        "M": 1000
+    }
+    return numbers_mapper.get(romanNumber, 0)
+
+def test3(self):
+    self.assertEqual(convertToInt("VI"), 6)
+
+
+def convertToInt(romanNumber):
+    numbers_mapper = {
+        "I": 1, "V": 5,
+        "X": 10, "L": 50,
+        "C": 100, "D": 500,
+        "M": 1000
+    }
+
+    res = 0
+    for i in range(len(romanNumber)):
+        actualLetter = romanNumber[i]
+        previousLetter =  romanNumber[i - 1] if i > 0 else None
+        if actualLetter and previousLetter and numbers_mapper.get(actualLetter) > numbers_mapper.get(previousLetter):
+            res -= 2 * numbers_mapper.get(previousLetter)
+        else:
+            res += numbers_mapper.get(romanNumber[i])
+    return res
+
+def test4(self):
+    self.assertEqual(convertToInt("IV"), 4)
+
+def convertToInt(romanNumber):
+    numbers_mapper = {
+        "I": 1, "V": 5,
+        "X": 10, "L": 50,
+        "C": 100, "D": 500,
+        "M": 1000
+    }
+
+    res = 0
+    for i in range(len(romanNumber)):
+        actualLetter = romanNumber[i]
+        previousLetter =  romanNumber[i - 1] if i > 0 else None
+        res += numbers_mapper.get(romanNumber[i])
+        if actualLetter and previousLetter and numbers_mapper.get(actualLetter) > numbers_mapper.get(previousLetter):
+            res -= 2 * numbers_mapper.get(previousLetter)
+
+    return res
+
+def test4(self):
+    self.assertEqual(convertToInt("m"), -9999)
+
+def convertToInt(roman_number):
+    numbers_mapper = {
+        "I": 1, "V": 5,
+        "X": 10, "L": 50,
+        "C": 100, "D": 500,
+        "M": 1000
+    }
+
+    input_letters, valid_letters = set(roman_number), set(numbers_mapper.keys())
+    union = input_letters | valid_letters
+
+    if union != valid_letters:
+        return -9999
+
+    res = 0
+    for i in range(len(roman_number)):
+        actual_letter = roman_number[i]
+        previous_letter =  roman_number[i - 1] if i > 0 else None
+        res += numbers_mapper.get(roman_number[i])
+        if actual_letter and previous_letter and numbers_mapper.get(actual_letter) > numbers_mapper.get(previous_letter):
+            res -= 2 * numbers_mapper.get(roman_number[i-1])
+
+    return res
+
+def test5(self):
+    self.assertEqual(convertToInt("IL"), -9999)
+
+
+DEFAULT_VALUE = -9999
+
+VALID_SUBTRACT_CHARS = { "IV", "IX", "XL", "XC", "CD", "CM"}
+
+
+def convertToInt(roman_number):
+    numbers_mapper = {
+        "I": 1, "V": 5,
+        "X": 10, "L": 50,
+        "C": 100, "D": 500,
+        "M": 1000
+    }
+
+    input_letters, valid_letters = set(roman_number), set(numbers_mapper.keys())
+    union = input_letters | valid_letters
+
+    if union != valid_letters:
+        return DEFAULT_VALUE
+
+
+    res = 0
+    for i in range(len(roman_number)):
+        actual_letter = roman_number[i]
+        next_letter =  roman_number[i + 1] if len(roman_number) > i + 1 else None
+
+        actual_value = numbers_mapper.get(actual_letter, 0)
+        next_value = numbers_mapper.get(next_letter, 0)
+
+        if actual_value < next_value:
+            if f"{actual_letter}{next_letter}" not in VALID_SUBTRACT_CHARS:
+                return DEFAULT_VALUE
+            res -= actual_value
+        else:
+            res += actual_value
+
+    return res
+
+def test6(self):
+    self.assertEqual(convertToInt("LL"), -9999)
+
+
+# CONSTANTS
+DEFAULT_VALUE = -9999
+VALID_SUBTRACT_CHARS = { "IV", "IX", "XL", "XC", "CD", "CM"}
+MAX_LETTER_COUNT = { "I" : 3, "V" : 1, "X": 3,  "L" : 1, "C" : 3,  "D" : 1 }
+
+# MAIN FUNCTION
+def convertToInt(roman_number):
+    numbers_mapper = {
+        "I": 1, "V": 5,
+        "X": 10, "L": 50,
+        "C": 100, "D": 500,
+        "M": 1000
+    }
+
+
+    # CORRECT LETTERS CHECK
+    input_letters, valid_letters = set(roman_number), set(numbers_mapper.keys())
+    union = input_letters | valid_letters
+    if union != valid_letters:
+        return DEFAULT_VALUE
+
+
+    # CORRECT SEQUENCE
+    count = 0
+    last_char = None
+    for char in roman_number:
+        if last_char != char:
+            count = 1
+            last_char = char
+        else :
+            count += 1
+        if MAX_LETTER_COUNT[char] < count:
+            return DEFAULT_VALUE
+
+
+    res = 0
+    for i in range(len(roman_number)):
+        actual_letter = roman_number[i]
+        next_letter =  roman_number[i + 1] if len(roman_number) > i + 1 else None
+
+        actual_value = numbers_mapper.get(actual_letter, 0)
+        next_value = numbers_mapper.get(next_letter, 0)
+
+        if actual_value < next_value:
+            if f"{actual_letter}{next_letter}" not in VALID_SUBTRACT_CHARS:
+                return DEFAULT_VALUE
+            res -= actual_value
+        else:
+            res += actual_value
+
+    return res
+
+def test7(self):
+    self.assertEqual(convertToInt("MMMCMXCIX"), 3999)
+
+# CONSTANTS
+DEFAULT_VALUE = -9999
+VALID_SUBTRACT_CHARS = { "IV", "IX", "XL", "XC", "CD", "CM"}
+MAX_LETTER_COUNT = { "I" : 3, "V" : 1, "X": 3,  "L" : 1, "C" : 3,  "D": 1}
+
+# MAIN FUNCTION
+def convertToInt(roman_number):
+    numbers_mapper = {
+        "I": 1, "V": 5,
+        "X": 10, "L": 50,
+        "C": 100, "D": 500,
+        "M": 1000
+    }
+
+
+    # CORRECT LETTERS CHECK
+    input_letters, valid_letters = set(roman_number), set(numbers_mapper.keys())
+    union = input_letters | valid_letters
+    if union != valid_letters:
+        return DEFAULT_VALUE
+
+
+    # CORRECT SEQUENCE
+    count = 0
+    last_char = None
+    NOT_COUNT_LETTER = "M"
+    for char in roman_number:
+        if char == NOT_COUNT_LETTER:
+            count = 0
+            continue
+        if last_char != char:
+            count = 1
+            last_char = char
+        else:
+            count += 1
+        if MAX_LETTER_COUNT[char] < count:
+            return DEFAULT_VALUE
+
+
+    res = 0
+    for i in range(len(roman_number)):
+        actual_letter = roman_number[i]
+        next_letter =  roman_number[i + 1] if len(roman_number) > i + 1 else None
+
+        actual_value = numbers_mapper.get(actual_letter, 0)
+        next_value = numbers_mapper.get(next_letter, 0)
+
+        if actual_value < next_value:
+            if f"{actual_letter}{next_letter}" not in VALID_SUBTRACT_CHARS:
+                return DEFAULT_VALUE
+            res -= actual_value
+        else:
+            res += actual_value
+
+    return res
+
+def test8(self):
+    self.assertEqual(convertToInt(10), -9999)
+
+# CONSTANTS
+DEFAULT_VALUE = -9999
+VALID_SUBTRACT_CHARS = { "IV", "IX", "XL", "XC", "CD", "CM"}
+MAX_LETTER_COUNT = { "I" : 3, "V" : 1, "X": 3,  "L" : 1, "C" : 3,  "D": 1}
+
+# MAIN FUNCTION
+def convertToInt(roman_number):
+    numbers_mapper = {
+        "I": 1, "V": 5,
+        "X": 10, "L": 50,
+        "C": 100, "D": 500,
+        "M": 1000
+    }
+
+    # CHECK TYPE
+    if not isinstance(roman_number, str):
+        return DEFAULT_VALUE
+
+    # CORRECT LETTERS CHECK
+    input_letters, valid_letters = set(roman_number), set(numbers_mapper.keys())
+    union = input_letters | valid_letters
+    if union != valid_letters:
+        return DEFAULT_VALUE
+
+
+    # CORRECT SEQUENCE
+    count = 0
+    last_char = None
+    NOT_COUNT_LETTER = "M"
+    for char in roman_number:
+        if char == NOT_COUNT_LETTER:
+            count = 0
+            continue
+        if last_char != char:
+            count = 1
+            last_char = char
+        else:
+            count += 1
+        if MAX_LETTER_COUNT[char] < count:
+            return DEFAULT_VALUE
+
+
+    res = 0
+    for i in range(len(roman_number)):
+        actual_letter = roman_number[i]
+        next_letter =  roman_number[i + 1] if len(roman_number) > i + 1 else None
+
+        actual_value = numbers_mapper.get(actual_letter, 0)
+        next_value = numbers_mapper.get(next_letter, 0)
+
+        if actual_value < next_value:
+            if f"{actual_letter}{next_letter}" not in VALID_SUBTRACT_CHARS:
+                return DEFAULT_VALUE
+            res -= actual_value
+        else:
+            res += actual_value
+
+    return res
+
+def test9(self):
+    self.assertEqual(convertToInt("IXIX"), -9999)
+
+# CONSTANTS
+DEFAULT_VALUE = -9999
+VALID_SUBTRACT_CHARS = { "IV", "IX", "XL", "XC", "CD", "CM"}
+MAX_LETTER_COUNT = { "I" : 3, "V" : 1, "X": 3,  "L" : 1, "C" : 3,  "D": 1}
+
+# MAIN FUNCTION
+def convertToInt(roman_number):
+    numbers_mapper = {
+        "I": 1, "V": 5,
+        "X": 10, "L": 50,
+        "C": 100, "D": 500,
+        "M": 1000
+    }
+
+    # CHECK TYPE
+    if not isinstance(roman_number, str):
+        return DEFAULT_VALUE
+
+    # CORRECT LETTERS CHECK
+    input_letters, valid_letters = set(roman_number), set(numbers_mapper.keys())
+    union = input_letters | valid_letters
+    if union != valid_letters:
+        return DEFAULT_VALUE
+
+
+    # CORRECT SEQUENCE
+    count = 0
+    last_char = None
+    NOT_COUNT_LETTER = "M"
+    for char in roman_number:
+        if char == NOT_COUNT_LETTER:
+            count = 0
+            continue
+        if last_char != char:
+            count = 1
+            last_char = char
+        else:
+            count += 1
+        if MAX_LETTER_COUNT[char] < count:
+            return DEFAULT_VALUE
+
+
+    res = 0
+    used_subtractive_pairs = set()
+    for i in range(len(roman_number)):
+        actual_letter = roman_number[i]
+        next_letter =  roman_number[i + 1] if len(roman_number) > i + 1 else None
+
+        actual_value = numbers_mapper.get(actual_letter, 0)
+        next_value = numbers_mapper.get(next_letter, 0)
+
+        if actual_value < next_value:
+            if f"{actual_letter}{next_letter}" not in VALID_SUBTRACT_CHARS:
+                return DEFAULT_VALUE
+
+            pair = f"{actual_letter}{next_letter}"
+            if pair in used_subtractive_pairs:
+                return DEFAULT_VALUE
+            used_subtractive_pairs.add(pair)
+
+            res -= actual_value
+        else:
+            res += actual_value
+
+    return res
+
+def test10(self):
+    self.assertEqual(convertToInt("IXX"), -9999)
+
+# CONSTANTS
+DEFAULT_VALUE = -9999
+VALID_SUBTRACT_CHARS = { "IV", "IX", "XL", "XC", "CD", "CM"}
+MAX_LETTER_COUNT = { "I" : 3, "V" : 1, "X": 3,  "L" : 1, "C" : 3,  "D": 1}
+
+# MAIN FUNCTION
+def convertToInt(roman_number):
+    numbers_mapper = {
+        "I": 1, "V": 5,
+        "X": 10, "L": 50,
+        "C": 100, "D": 500,
+        "M": 1000
+    }
+
+    # CHECK TYPE
+    if not isinstance(roman_number, str):
+        return DEFAULT_VALUE
+
+    # CORRECT LETTERS CHECK
+    input_letters, valid_letters = set(roman_number), set(numbers_mapper.keys())
+    union = input_letters | valid_letters
+    if union != valid_letters:
+        return DEFAULT_VALUE
+
+
+    # CORRECT SEQUENCE
+    count = 0
+    last_char = None
+    NOT_COUNT_LETTER = "M"
+    for char in roman_number:
+        if char == NOT_COUNT_LETTER:
+            count = 0
+            continue
+        if last_char != char:
+            count = 1
+            last_char = char
+        else:
+            count += 1
+        if MAX_LETTER_COUNT[char] < count:
+            return DEFAULT_VALUE
+
+
+    res = 0
+    used_subtractive_pairs = set()
+    for i in range(len(roman_number)):
+        actual_letter = roman_number[i]
+        next_letter =  roman_number[i + 1] if len(roman_number) > i + 1 else None
+
+        actual_value = numbers_mapper.get(actual_letter, 0)
+        next_value = numbers_mapper.get(next_letter, 0)
+
+        if actual_value < next_value:
+            if f"{actual_letter}{next_letter}" not in VALID_SUBTRACT_CHARS:
+                return DEFAULT_VALUE
+
+            pair = f"{actual_letter}{next_letter}"
+            if pair in used_subtractive_pairs:
+                return DEFAULT_VALUE
+            used_subtractive_pairs.add(pair)
+
+            after_pair_value = numbers_mapper.get(roman_number[i + 2], 0) if len(roman_number) > i + 2 else 0
+            if after_pair_value >= actual_value:
+                return DEFAULT_VALUE
+
+            res -= actual_value
+        else:
+            res += actual_value
+
+    return res
+
+ def test11(self):
+        self.assertEqual(convertToInt("VIV"), -9999)
+
+DEFAULT_VALUE = -9999
+VALID_SUBTRACT_CHARS = {"IV", "IX", "XL", "XC", "CD", "CM"}
+MAX_LETTER_COUNT = {"I": 3, "V": 1, "X": 3, "L": 1, "C": 3, "D": 1, "M": 3}
+
+
+def convertToInt(roman_number):
+    numbers_mapper = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+
+    if not isinstance(roman_number, str) or not roman_number:
+        return DEFAULT_VALUE
+
+    for char, max_total in MAX_LETTER_COUNT.items():
+        if max_total == 1 and roman_number.count(char) > 1:
+            return DEFAULT_VALUE
+
+    last_char = None
+    streak = 0
+    for char in roman_number:
+        if char not in numbers_mapper: return DEFAULT_VALUE
+        if char == last_char:
+            streak += 1
+        else:
+            streak = 1
+            last_char = char
+        if streak > MAX_LETTER_COUNT[char]:
+            return DEFAULT_VALUE
+
+    res = 0
+    i = 0
+    last_val = float('inf')
+    used_pairs = set()
+
+    while i < len(roman_number):
+        curr_char = roman_number[i]
+        curr_val = numbers_mapper[curr_char]
+        next_val = numbers_mapper[roman_number[i + 1]] if i + 1 < len(roman_number) else 0
+
+        if curr_val < next_val:
+            pair = roman_number[i:i + 2]
+            if pair not in VALID_SUBTRACT_CHARS or pair in used_pairs:
+                return DEFAULT_VALUE
+
+            val = next_val - curr_val
+            if val >= last_val:
+                return DEFAULT_VALUE
+
+            res += val
+            last_val = val
+            used_pairs.add(pair)
+            i += 2
+
+        else:
+            if curr_val > last_val:
+                return DEFAULT_VALUE
+
+            res += curr_val
+            last_val = curr_val
+            i += 1
+
+    return res
+
+def test13(self):
+    self.assertEqual(convertToInt("CDC"), -9999)
+
+
+# NASE POCITY PRI RIESENI ZADANIA https://www.youtube.com/watch?v=BJVyTY82H8A
+# KED SME TO AKO TAK VYRIESILI https://www.youtube.com/watch?v=Sk0eQqP_d6c
+
+DEFAULT_VALUE = -9999
+VALID_SUBTRACT_CHARS = {"IV", "IX", "XL", "XC", "CD", "CM"}
+MAX_LETTER_COUNT = {"I": 3, "V": 1, "X": 3, "L": 1, "C": 3, "D": 1, "M": 3}
+
+
+def convertToInt(roman_number):
+    numbers_mapper = {
+        "I": 1, "V": 5,
+        "X": 10, "L": 50,
+        "C": 100, "D": 500,
+        "M": 1000
+    }
+
+    # CHECK TYPE AND EMPTY
+    if not isinstance(roman_number, str) or not roman_number:
+        return DEFAULT_VALUE
+
+    # CORRECT LETTERS CHECK
+    input_letters, valid_letters = set(roman_number), set(numbers_mapper.keys())
+    union = input_letters | valid_letters
+    if union != valid_letters:
+        return DEFAULT_VALUE
+
+    # V, L, D CAN ONLY APPEAR ONCE TOTAL
+    for char in ("V", "L", "D"):
+        if roman_number.count(char) > 1:
+            return DEFAULT_VALUE
+
+    # CORRECT SEQUENCE (consecutive repetition)
+    count = 1
+    last_char = roman_number[0]
+    for i in range(1, len(roman_number)):
+        char = roman_number[i]
+        if char == last_char:
+            count += 1
+        else:
+            count = 1
+            last_char = char
+        if count > MAX_LETTER_COUNT[char]:
+            return DEFAULT_VALUE
+
+    # COMPUTE VALUE AND VALIDATE ORDERING
+    res = 0
+    i = 0
+    last_val = float('inf')
+    after_pair = False
+    used_subtractive_pairs = set()
+
+    while i < len(roman_number):
+        actual_letter = roman_number[i]
+        next_letter = roman_number[i + 1] if i + 1 < len(roman_number) else None
+
+        actual_value = numbers_mapper[actual_letter]
+        next_value = numbers_mapper.get(next_letter, 0)
+
+        if actual_value < next_value:
+            pair = f"{actual_letter}{next_letter}"
+            if pair not in VALID_SUBTRACT_CHARS:
+                return DEFAULT_VALUE
+            if pair in used_subtractive_pairs:
+                return DEFAULT_VALUE
+
+            val = next_value - actual_value
+            if val > last_val:
+                return DEFAULT_VALUE
+            if after_pair and val == last_val:
+                return DEFAULT_VALUE
+
+            res += val
+            last_val = actual_value
+            after_pair = True
+            used_subtractive_pairs.add(pair)
+            i += 2
+
+        else:
+            if actual_value > last_val:
+                return DEFAULT_VALUE
+            if after_pair and actual_value >= last_val:
+                return DEFAULT_VALUE
+
+            res += actual_value
+            last_val = actual_value
+            after_pair = False
+            i += 1
+
+    return res
