@@ -7,7 +7,7 @@ from util import *
 class Perceptron:
     def __init__(self, dim, use_activation):
         self.dim = dim
-        self.weights = np.random.rand(dim + 1)      # FIXME: initialize the weight vector
+        self.weights = np.random.rand(dim + 1)  # VELKOST VSTUPU + (BIAS)   # FIXME: initialize the weight vector
         print(self.weights)
         print(self.weights.shape)
         self.use_activation = use_activation
@@ -25,20 +25,20 @@ class Perceptron:
             overall_error = 0  # Overall error for episode
 
             for idx in np.random.permutation(count):  # "for each idx in random order"
-                x = add_bias(inputs[idx])                        # FIXME: retrieve the current input and add bias
-                d = targets[idx]                          # FIXME: retrieve the current target value
+                x = add_bias(inputs[idx])   #PRE KAZDY TRENOVACI INPUT PRIDAJ BIAS                     # FIXME: retrieve the current input and add bias
+                d = targets[idx]    # DOSTAN CHCENY VYSLEDOK                     # FIXME: retrieve the current target value
 
-                net = self.weights.T @ x                      # FIXME: compute the "net" values
+                net = self.weights.T @ x     # VSTUP DO PRECPETRONU - VSTUP * VAHA                 # FIXME: compute the "net" values
 
                 if self.use_activation:
-                    y = 1.0 if net >= 0 else 0.0                      # FIXME: set the output
+                    y = 1.0 if net >= 0 else 0.0                    # FIXME: set the output
                 else:
                     y = net                      # FIXME: set the output
 
-                e = d - y                          # FIXME: compute error on this input
-                overall_error += e**2 / 2.0
+                e = d - y       # VYPOCITAJ ERROR - to je CHCENA HODNOTA - PREDIKOVANA               # FIXME: compute error on this input
+                overall_error += e**2 / 2.0 # CELKOVY ERROR JE error plus 1/2 * ERRORˆ2 - INAK POVEDANE ERROR JE E = 1/2 * SUM[x] (vystup[x] - predikcia[x])ˆ2
 
-                self.weights += alpha * e * x             # FIXME: update the weights
+                self.weights += alpha * e * x      # VAHY UPDATNES AKO W = W + ALFA * E * X       # FIXME: update the weights
 
             errors.append(overall_error)
             print('E = {:.3f}'.format(overall_error))
